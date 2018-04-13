@@ -1,0 +1,6 @@
+build-tools;27.0.2
+extras;android;m2repository
+extras;google;m2repository
+platform-tools
+platforms;android-27
+tools
