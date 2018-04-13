@@ -14,7 +14,7 @@ ENV NDK_ROOT /opt/android-ndk-${ANDROID_NDK_VER}
 ADD ./mirrorlist /etc/pacman.d/
 
 RUN useradd -m bamboo \
-	&& pacman -Sy --noconfirm base-devel unzip mercurial git subversion \
+	&& pacman -Sy --noconfirm base-devel unzip mercurial git subversion openssh \
 	# Intall the yaourt tool \
 	&& (cp /etc/sudoers /etc/sudoers.bak;echo 'ALL ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers) \
 	&& sudo -u nobody mkdir /tmp/yaourt \
@@ -30,10 +30,10 @@ RUN useradd -m bamboo \
 COPY android.packages /opt
 
 RUN mkdir /opt/android-sdk \
-	#&& (cd /opt/android-sdk;curl -O -L https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip;unzip *.zip;rm -f *.zip) \
-	#&& (cd /opt;curl -O -L https://dl.google.com/android/repository/android-ndk-${ANDROID_NDK_VER}-linux-x86_64.zip;unzip *.zip;rm -f *.zip) \
-	#&& curl -O -L https://www.crystax.net/download/crystax-ndk-${CRYSTAX_NDK_VER}-linux-x86_64.tar.xz | tar xzf - -C /opt \
-	#&& yes | $ANDROID_SDK_ROOT/tools/bin/sdkmanager --package_file=/opt/android.packages \
+	&& (cd /opt/android-sdk;curl -O -L https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip;unzip *.zip;rm -f *.zip) \
+	&& (cd /opt;curl -O -L https://dl.google.com/android/repository/android-ndk-${ANDROID_NDK_VER}-linux-x86_64.zip;unzip *.zip;rm -f *.zip) \
+	&& curl -O -L https://www.crystax.net/download/crystax-ndk-${CRYSTAX_NDK_VER}-linux-x86_64.tar.xz | tar xzf - -C /opt \
+	&& yes | $ANDROID_SDK_ROOT/tools/bin/sdkmanager --package_file=/opt/android.packages \
 	&& chown -R bamboo:bamboo /opt/*
 
 #####################
