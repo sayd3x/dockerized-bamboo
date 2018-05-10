@@ -1,0 +1,36 @@
+version: '3.6'
+services:
+  bamboo_server:
+    build:
+      context: .
+      target: bamboo_server
+    ports:
+      - 8085:8085
+      - 54663:54663
+    volumes:
+      - type: bind
+        source: ./bamboo-server/home
+        target: /home/bamboo
+      - type: bind
+        source: ./bamboo-server/config/mnt
+        target: /mnt
+      - type: bind
+        source: ./bamboo-server/config/hosts
+        target: /etc/hosts
+      - type: bind
+        source: ./bamboo-server/config/fstab
+        target: /etc/fstab
+    restart: always
+  bamboo_agent:
+    build:
+      context: .
+      target: bamboo_agent
+      args:
+        - AGENT_URL=http://bamboo_server:8085/agentServer/
+    volumes:
+      - type: bind
+        source: ./bamboo-agent
+        target: /home/bamboo
+    depends_on:
+      - bamboo_server
+    restart: always
