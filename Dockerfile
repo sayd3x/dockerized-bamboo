@@ -14,8 +14,10 @@ ENV CRYSTAX_NDK_ROOT /opt/crystax-ndk-${CRYSTAX_NDK_VER}
 ENV NDK_ROOT /opt/android-ndk-${ANDROID_NDK_VER}
 
 ADD ./mirrorlist /etc/pacman.d/
+ADD ./locale.gen /etc/locale.gen
 
-RUN useradd -m bamboo \
+RUN locale-gen \
+	&& useradd -m bamboo \
 	&& echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n[bpiotrowski]\nServer = https://pkgbuild.com/~bpiotrowski/repo" >> /etc/pacman.conf \
 	&& pacman -Sy --noconfirm base-devel unzip mercurial git subversion openssh aria2 python2 python2-pip cifs-utils zip libpng12 libpng lib32-glibc lib32-gcc-libs freeimage ncurses5-compat-libs jshon \
 	&& pip2 install mercurial_keyring Pillow xlrd openpyxl \
