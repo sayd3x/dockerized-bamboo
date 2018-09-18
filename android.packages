@@ -4,3 +4,4 @@ extras;google;m2repository
 platform-tools
 platforms;android-27
 tools
+ndk-bundle

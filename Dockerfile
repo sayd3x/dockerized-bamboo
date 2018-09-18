@@ -3,15 +3,10 @@
 ############
 FROM base/archlinux:latest AS bamboo_base
 
-ARG GRADLE_VER=3.3
-ARG CRYSTAX_NDK_VER=10.3.2
-ARG ANDROID_NDK_VER=r16b
 ARG BAMBOO_VER=6.4.1
 
 ENV ANDROID_HOME /opt/android-sdk
 ENV ANDROID_SDK_ROOT /opt/android-sdk
-ENV CRYSTAX_NDK_ROOT /opt/crystax-ndk-${CRYSTAX_NDK_VER}
-ENV NDK_ROOT /opt/android-ndk-${ANDROID_NDK_VER}
 
 ADD ./mirrorlist /etc/pacman.d/
 ADD ./locale.gen /etc/locale.gen
@@ -43,13 +38,8 @@ RUN	mkdir /opt/android-sdk \
 
 RUN	yes | $ANDROID_SDK_ROOT/tools/bin/sdkmanager --package_file=/opt/android.packages
 
-RUN	(cd /opt;curl -O -L https://dl.google.com/android/repository/android-ndk-${ANDROID_NDK_VER}-linux-x86_64.zip;unzip *.zip;rm -f *.zip)
 
-RUN	(cd /opt;aria2c --max-connection-per-server=10 --async-dns=false https://www.crystax.net/download/crystax-ndk-${CRYSTAX_NDK_VER}-linux-x86_64.tar.xz;tar xJfv *.tar.xz;rm -f *.tar.xz)
-
-RUN	(cd /opt;aria2c --max-connection-per-server=10 --async-dns=false https://downloads.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip;unzip *.zip;rm -f *.zip)
-
-ENV PATH /opt/gradle-${GRADLE_VER}/bin:/home/bamboo/buildserver/bin:$PATH
+ENV PATH /home/bamboo/buildserver/bin:$PATH
 ENV BAMBOO_VERSION $BAMBOO_VER
 USER root
 
